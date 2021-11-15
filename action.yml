@@ -1,0 +1,32 @@
+# https://docs.github.com/en/actions/creating-actions/about-custom-actions
+# https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+
+name: Create Octopus Release
+description: Create Octopus Release
+
+inputs:
+  project:
+    description: octopus project key
+    required: true
+
+  version:
+    description: octopus package version
+    required: true
+
+  octopus-api:
+    description: octopus api
+    required: true
+
+  octopus-key:
+    description: octopus key
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Octopus CLI
+      shell: bash
+      run: dotnet tool install -g octopus.dotnet.cli
+    - name: Create Octopus Release
+      shell: bash
+      run: dotnet octo create-release --project=${{ inputs.project }} --version=${{ inputs.version }} --packageversion=${{ inputs.version }} --ignoreExisting --server=${{ inputs.octopus-api }} --apikey=${{ inputs.octopus-key }}
