@@ -21,6 +21,11 @@ inputs:
     description: octopus key
     required: true
 
+  optional-parameters:
+    description: optional parameters
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -29,4 +34,4 @@ runs:
       run: dotnet tool install -g octopus.dotnet.cli
     - name: Create Octopus Release
       shell: bash
-      run: dotnet octo create-release --project=${{ inputs.project }} --version=${{ inputs.version }} --packageversion=${{ inputs.version }} --ignoreExisting --server=${{ inputs.octopus-api }} --apikey=${{ inputs.octopus-key }}
+      run: dotnet octo create-release --project=${{ inputs.project }} --version=${{ inputs.version }} --packageversion=${{ inputs.version }} --ignoreExisting --server=${{ inputs.octopus-api }} --apikey=${{ inputs.octopus-key }} ${{ inputs.optional-parameters }}
